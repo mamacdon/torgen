@@ -70,7 +70,7 @@ textgen = textgenrnn('textgenrnn_weights.hdf5')
 
 print("\n")
 
-for t in [0.5, 1, 1.25]:
+for t in [0.3, 0.5, 1, 1.25]:
     print("Temperature {}".format(t))
     print("--------------------------------------------------------------------")
 
