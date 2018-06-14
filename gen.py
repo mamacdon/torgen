@@ -16,10 +16,7 @@ def build_roadtypes():
 
         # repeat each street type N types where N is its frequency in the input data
         for l in lines:
-            #fields = l.split(",")
             (type, freq) = l.split(",")
-            # for _ in range(int(fields[1])):
-            #     result.append(fields[0])
             for _ in range(int(freq)):
                 result.append(type)
 
