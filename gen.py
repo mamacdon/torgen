@@ -16,15 +16,27 @@ def build_roadtypes():
 
         # repeat each street type N types where N is its frequency in the input data
         for l in lines:
-            fields = l.split(",")
-            for _ in range(int(fields[1])):
-                result.append(fields[0])
+            #fields = l.split(",")
+            (type, freq) = l.split(",")
+            # for _ in range(int(fields[1])):
+            #     result.append(fields[0])
+            for _ in range(int(freq)):
+                result.append(type)
 
     # probably unnecessary
     shuffle(result)
 
     return result
 
+def build_basenames():
+    '''
+    returns map of basenames
+    '''
+    dict = {}
+    with open("corpus/streets.txt") as file:
+        for line in file:
+            dict[line.strip()] = True
+    return dict
 
 def get_roadtype():
     return choice(roadtypes)
@@ -33,11 +45,23 @@ def get_roadtype():
 def add_roadtype(name):
     return "{} {}".format(name, get_roadtype())
 
+def generate(temp):
+    '''
+    Wrapper that checks generated names against the base street names to avoid regurgitation of input values
+    returns list
+    '''
+    is_in_dict = True
+    while is_in_dict:
+        result = textgen.generate(temperature=temp, return_as_list=True)
+        str = ' '.join(result)
+        is_in_dict = basenames.get(str, False)
+    return result
 
 '''
 MAIN
 '''
 roadtypes = build_roadtypes()
+basenames = build_basenames()
 
 # force print into utf8 mode?
 sys.stdout = io.TextIOWrapper(sys.stdout.detach(), 'utf8', 'replace')
@@ -51,7 +75,7 @@ for t in [0.5, 1, 1.25]:
     print("--------------------------------------------------------------------")
 
     for _ in range(0, 5):
-        list = textgen.generate(temperature=t, return_as_list=True)
+        list = generate(t)
         for l in list:
             print(add_roadtype(l))
 
