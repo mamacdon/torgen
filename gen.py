@@ -4,17 +4,19 @@ from functools import reduce
 from textgenrnn import textgenrnn
 from random import choice, shuffle
 
+STREETS_FILE = "corpus/streets.txt"
+ROADTYPES_FILE = "corpus/roadtypes.txt"
 
 def build_roadtypes():
-    '''
-    returns giant list from which an element can be selected at random. The probability of picking
-    a street S should be roughly equal to its frequency distribution from the input data
-    '''
-    with open("corpus/roadtypes.txt") as file:
+    """
+    Return a giant list. Picking a random element from this list should select a
+    street S with probability roughly equal to S's frequency distribution in STREETS_FILE.
+    """
+    with open(ROADTYPES_FILE) as file:
         lines = file.readlines()
         result = []
 
-        # repeat each street type N types where N is its frequency in the input data
+        # repeat each street type N times where N is its frequency in the file
         for l in lines:
             (type, freq) = l.split(",")
             for _ in range(int(freq)):
@@ -26,11 +28,11 @@ def build_roadtypes():
     return result
 
 def build_basenames():
-    '''
-    returns map of basenames
-    '''
+    """
+    Returns a set of basenames for roads
+    """
     dict = {}
-    with open("corpus/streets.txt") as file:
+    with open(STREETS_FILE) as file:
         for line in file:
             dict[line.strip()] = True
     return dict
@@ -43,10 +45,11 @@ def add_roadtype(name):
     return "{} {}".format(name, get_roadtype())
 
 def generate(temp):
-    '''
-    Wrapper that checks generated names against the base street names to avoid regurgitation of input values
+    """
+    Wrapper that checks generated names against the base street names to avoid a direct
+    regurgitation of input data.
     returns list
-    '''
+    """
     is_in_dict = True
     while is_in_dict:
         result = textgen.generate(temperature=temp, return_as_list=True)
@@ -54,9 +57,9 @@ def generate(temp):
         is_in_dict = basenames.get(str, False)
     return result
 
-'''
+"""
 MAIN
-'''
+"""
 roadtypes = build_roadtypes()
 basenames = build_basenames()
 
