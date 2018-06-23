@@ -6,12 +6,15 @@ Generates random Toronto-inspired street names using [textgenrnn](https://github
 - GNU Make
 
 ### Installation
-1. Checkout the source repo, `cd` to it then run:
+1. Checkout the repo and use pip to install dependencies
     ```
     git checkout git@github.com:mamacdon/torgen.git
-    pip3 install
+    pip3 install -r requirements.txt
     ```
     **Note:** the `requirements.txt` probably installs a bunch of unneeded dependencies, but Python makes this hard and I'm not an expert
+    
+    If you have trouble, try following the [textgenrnn instructions](https://github.com/minimaxir/textgenrnn#usage). Once you have textgenrnn
+    installed correctly, torgen should run.
 
 2. Train the model. This only has to be done once (unless you change the input data)
     ```
